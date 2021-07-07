@@ -6,6 +6,9 @@ const controller = {};
 controller.register = async (req, res, next) => {
     //si agregas mas datos aqui
     const {username, email, birthdate, password, followupemail} = req.body;
+    
+    const {status:emailExists} = await userService.findOneByEmail(email);
+    if(emailExists) return res.status(409).json({error: "el usuario ya existe"});
     const {status:userExists} = await userService.findOneByUsername(username);
     if(userExists) return res.status(409).json({error: "el usuario ya existe"});
     
@@ -18,9 +21,9 @@ controller.register = async (req, res, next) => {
     
 }
 controller.login = async (req, res, next) => {
-    const {username, password} = req.body;
+    const {email, password} = req.body;
 
-    const {status: userExists, content: user} = await userService.findOneByUsername(username);
+    const {status: userExists, content: user} = await userService.findOneByEmail(email);
     if(!userExists) return res.status(404).json({ error: "el usuario no existe " });
 
     const passwordCorrect = user.comparePasswords(password);

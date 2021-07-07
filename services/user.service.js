@@ -23,6 +23,19 @@ service.create= async ({username, email, birthdate, password, followupemail}) =>
  }
 }
 
+service.findOneByEmail = async (emailGiven) => {
+    try {
+        const user =  await User.findOne({
+            email: emailGiven
+        })
+
+        if (!user) return new ServiceResponse(false);
+        return new ServiceResponse(true, user);
+    } catch (error) {
+        throw error;
+    }
+}
+
 service.findOneByUsername = async (usernameGiven) => {
     try {
         const user =  await User.findOne({

@@ -31,8 +31,10 @@ validator.registerValidator= [
 ]
 
 validator.loginValidator = [
-    body("username")
-        .notEmpty().withMessage("username no puede venir vacio"),
+    body("email")
+    .optional()
+    .notEmpty().withMessage("email no puede venir vacia")
+    .isEmail().withMessage("email debe de ser un correo"),
     body("password")
         .notEmpty().withMessage("password no puede venir vacio")
 ]

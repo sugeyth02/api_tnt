@@ -58,14 +58,19 @@ controller.update = async (req, res, next) => {
       req.body;
     const { status: existUser, content: completeUser } =
       await service.findOneByUsername(username);
-    const { status: existEmail } = await service.findOneByEmail(email);
 
-    console.log({ existEmail, existUser, completeUser });
+      if(completeUser.email != email){
+       const { status: existEmail } = await service.findOneByEmail(email); 
+       console.log({existEmail});
+       if (existEmail) throw " the email is already taken";
+      }
 
-    if (!existUser || existEmail) throw "Cannot find the user or invalid email";
+    console.log({ existUser, completeUser });
+
+    if (!existUser) throw "Cannot find the user";
 
     if (!completeUser.comparePasswords(oldPassword)) {
-      throw "User and password not matcht";
+      throw "User and password not match";
     }
 
     const newUser = service.hashPassword({

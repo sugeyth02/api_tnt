@@ -43,6 +43,8 @@ service.findOneByEmail = async (emailGiven) => {
   }
 };
 
+
+
 service.findOneByUsername = async (usernameGiven) => {
   try {
     const user = await User.findOne({

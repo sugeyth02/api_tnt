@@ -9,16 +9,17 @@ controller.register = async (req, res, next) => {
 
   const { status: emailExists } = await userService.findOneByEmail(email);
   if (emailExists)
-    return res.status(409).json({ error: "el usuario ya existe" });
+    return res.status(409).json({error: true, message:  "el usuario ya existe" });
   const { status: userExists } = await userService.findOneByUsername(username);
   if (userExists)
-    return res.status(409).json({ error: "el usuario ya existe" });
+    return res.status(409).json({ error: true, message:  "el usuario ya existe" });
 
   const { status: userCreated } = await userService.create(req.body);
   if (!userCreated)
-    return res.status(409).json({ error: "no se pdo crear el usuario" });
+    return res.status(409).json({ error: true, message:  "no se pdo crear el usuario" });
 
   return res.status(201).json({
+    error: false,
     message: "usuario registrado",
   });
 };
@@ -28,11 +29,11 @@ controller.login = async (req, res, next) => {
   const { status: userExists, content: user } =
     await userService.findOneByEmail(email);
   if (!userExists)
-    return res.status(404).json({ error: "el usuario no existe " });
+    return res.status(404).json({ error: true, message:  "el usuario no existe " });
 
   const passwordCorrect = user.comparePasswords(password);
   if (!passwordCorrect)
-    return res.status(401).json({ error: "Contraseña incorrecta" });
+    return res.status(401).json({ error: true, message:  "Contraseña incorrecta" });
 
   const token = createToken(user._id);
 
@@ -40,10 +41,11 @@ controller.login = async (req, res, next) => {
     user,
     token
   );
-  if (!tokenSaved) return res.status(409).json({ error: "No se pudo logear " });
+  if (!tokenSaved) return res.status(409).json({ error: true, message:  "No se pudo logear " });
 
   return res.status(200).json({
     error: false,
+    message: "logeado exitosamente",
     username: user.username,
     email: user.email,
     password: user.hashedPassword,

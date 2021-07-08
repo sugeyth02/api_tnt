@@ -1,6 +1,6 @@
 const User = require("../models/User");
 const ServiceResponse = require("../classes/ServiceResponse");
-const { verifyToken } = require("./../utils/jwt.tools");
+const { verifyToken } = require("../utils/jwt.tools");
 const service = {};
 const crypto = require("crypto");
 //si agregas mas datos aqui

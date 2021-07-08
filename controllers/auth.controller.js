@@ -1,6 +1,6 @@
 const service = require("../services/user.service");
 const userService = require("../services/user.service");
-const { createToken } = require("./../utils/jwt.tools");
+const { createToken } = require("../utils/jwt.tools");
 const controller = {};
 
 controller.register = async (req, res, next) => {
